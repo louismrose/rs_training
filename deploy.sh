@@ -1,1 +1,1 @@
-ssh linux.cs.york.ac.uk 'cd ~/web/rs_training && git pull'
+ssh linux.cs.york.ac.uk 'cd /n/www/cs/bos/RSTraining && git pull'
