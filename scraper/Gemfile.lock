@@ -1,0 +1,10 @@
+GEM
+  remote: http://gemcutter.org/
+  specs:
+    nokogiri (1.5.4)
+
+PLATFORMS
+  ruby
+
+DEPENDENCIES
+  nokogiri (~> 1.5.4)
