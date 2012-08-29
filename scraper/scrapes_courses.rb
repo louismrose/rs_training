@@ -16,7 +16,7 @@ private
   def extract_course_elements(url)
     @root = url[0,url.rindex('/')+1]
     index_page = Nokogiri::HTML(open(url))
-    @course_els = index_page.css('div#mdcolumn div#tab-1 li a')
+    @course_els = index_page.css('li.course a')
   end
   
   def print_progress_bar
@@ -25,7 +25,7 @@ private
   end
   
   def scrape_each_course
-    @course_els.each_with_index do |course_link, index|
+    @course_els.each do |course_link|
       scrape_course(@root + course_link['href'])
       print '.'
     end
@@ -33,30 +33,25 @@ private
     puts ""
   end
   
-  def print_results
-    courses.group_by { |c| c.category }.each do |category, courses|
-      puts "<h3>#{category}</h3>"
-      puts "<ul>"
-      courses.sort_by { |c| c.date }.each do |c|
-        puts "  <li>#{c.to_html}</li>" 
-      end
-      puts "</ul>"
-    end
-  end
-
   def scrape_course(url)
     course_page = Nokogiri::HTML(open(url)) 
     title_el = course_page.css('div#mdcolumn h1').first
     date_el = course_page.css('div#mdcolumn div#tabbed-content a').first
-    category_el = course_page.css('div#breadcrumb li').last
 
     if date_el
       title = title_el.content.strip
       date = date_el.content.strip
-      category = category_el.content.gsub('»', '').strip
       
-      courses << Course.new(title, date, category, url)
+      courses << Course.new(title, date, url)
     end
+  end
+  
+  def print_results
+    puts "<ul>"
+    courses.sort_by { |c| c.date }.each do |c|
+      puts "  <li>#{c.to_html}</li>" 
+    end
+    puts "</ul>"
   end
   
   def courses

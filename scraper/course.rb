@@ -1,12 +1,11 @@
 require 'date'
 
 class Course
-  attr_reader :title, :date, :category, :url
+  attr_reader :title, :date, :url
   
-  def initialize(title, date, category, url)
+  def initialize(title, date, url)
     @title = title
     @date = Date.parse(date)
-    @category = category
     @url = url
   end
   
